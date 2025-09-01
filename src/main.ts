@@ -1,19 +1,28 @@
+import './style.css';
+
 const inputEl = document.getElementById('todo-input') as HTMLInputElement;
 const addBtn = document.getElementById('add-btn') as HTMLButtonElement;
 const todoList = document.getElementById('todo-list') as HTMLUListElement;
 
-addBtn.addEventListener('click', () => {
+addBtn.addEventListener('click', addTask);
+inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addTask();
+});
+
+function addTask() {
     const task = inputEl.value.trim();
-    if (task === '') return;
+    if (!task) return;
 
     const li = document.createElement('li');
 
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.addEventListener('change', () => {
+        li.classList.toggle('done', checkbox.checked);
+    });
+
     const span = document.createElement('span');
     span.textContent = task;
-
-    span.addEventListener('click', () => {
-        li.classList.toggle('done');
-    });
 
     const delBtn = document.createElement('button');
     delBtn.textContent = 'X';
@@ -21,9 +30,8 @@ addBtn.addEventListener('click', () => {
         li.remove();
     });
 
-    li.appendChild(span);
-    li.appendChild(delBtn);
+    li.append(checkbox, span, delBtn);
     todoList.appendChild(li);
 
     inputEl.value = '';
-});
+}
