@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/my-app:
     devDependencies:
       typescript:
         specifier: ~5.8.3

@@ -1,16 +1,12 @@
 {
-  "name": "my-todo-app",
+  "name": "my-monorepo",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "~5.8.3",
-    "vite": "^7.1.2"
-  },
-  "packageManager": "pnpm@10.15.1"
+  "dev": "pnpm --filter my-app dev",
+  "build": "pnpm --filter my-app build",
+  "preview": "pnpm --filter my-app preview"
+}
+
 }
