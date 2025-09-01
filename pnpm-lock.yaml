@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  apps/my-app:
+  apps/client:
     devDependencies:
       typescript:
         specifier: ~5.8.3

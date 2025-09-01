@@ -4,9 +4,9 @@
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-  "dev": "pnpm --filter my-app dev",
-  "build": "pnpm --filter my-app build",
-  "preview": "pnpm --filter my-app preview"
+  "dev": "pnpm --filter client dev",
+  "build": "pnpm --filter client build",
+  "preview": "pnpm --filter client preview"
 }
 
 }
