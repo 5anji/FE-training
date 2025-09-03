@@ -1,8 +1,10 @@
 <template>
-  <div class="app">
+  <UApp>
+    <RouterView />
+    <div class="app">
     <h1>To-Do List</h1>
-    <input v-model="newTask" @keyup.enter="addTask" placeholder="Add a task" />
-    <button @click="addTask">Add</button>
+    <UInput v-model="newTask" @keyup.enter="addTask" placeholder="Add a task" />
+    <UButton @click="addTask">Add</UButton>
 
     <ul>
       <ToDoItem
@@ -13,6 +15,7 @@
       />
     </ul>
   </div>
+  </UApp>
 </template>
 
 <script lang="ts" setup>

@@ -4,9 +4,13 @@
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-  "dev": "pnpm --filter client dev",
-  "build": "pnpm --filter client build",
-  "preview": "pnpm --filter client preview"
-}
-
+    "dev": "pnpm --filter client dev",
+    "build": "pnpm --filter client build",
+    "preview": "pnpm --filter client preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.12",
+    "tailwindcss": "^4.1.12",
+    "vue-router": "^4.5.1"
+  }
 }

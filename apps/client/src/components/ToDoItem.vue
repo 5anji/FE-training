@@ -1,8 +1,18 @@
 <template>
-  <li>
-    <input type="checkbox" v-model="task.done" />
-    <span :class="{ done: task.done }">{{ task.text }}</span>
-    <button @click="$emit('remove')">❌</button>
+  <li class="flex items-center gap-3">
+    <UCheckbox
+      v-model="task.done"
+      :label="task.text"
+      :class="{ 'line-through text-gray-500': task.done }"
+    />
+    <UButton
+      color="red"
+      variant="ghost"
+      size="xs"
+      @click="$emit('remove')"
+    >
+      ❌
+    </UButton>
   </li>
 </template>
 
@@ -25,8 +35,5 @@ defineEmits(['remove']);
 </script>
 
 <style scoped>
-.done {
-  text-decoration: line-through;
-  color: gray;
-}
+
 </style>
