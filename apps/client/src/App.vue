@@ -1,30 +1,48 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="app">
+    <h1>To-Do List</h1>
+    <input v-model="newTask" @keyup.enter="addTask" placeholder="Add a task" />
+    <button @click="addTask">Add</button>
+
+    <ul>
+      <ToDoItem
+        v-for="(task, index) in tasks"
+        :key="index"
+        :task="task"
+        @remove="removeTask(index)"
+      />
+    </ul>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
+<script lang="ts" setup>
+import { ref } from 'vue';
+import ToDoItem from './components/ToDoItem.vue';
+
+interface Task {
+  text: string;
+  done: boolean;
+}
+
+const tasks = ref<Task[]>([]);
+const newTask = ref('');
+
+function addTask() {
+  if (newTask.value.trim() !== '') {
+    tasks.value.push({ text: newTask.value, done: false });
+    newTask.value = '';
+  }
+}
+
+function removeTask(index: number) {
+  tasks.value.splice(index, 1);
+}
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.app {
+  max-width: 400px;
+  margin: auto;
+  font-family: sans-serif;
 }
 </style>
