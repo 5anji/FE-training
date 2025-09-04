@@ -1,39 +1,46 @@
 <template>
-  <li class="flex items-center gap-3">
-    <UCheckbox
-      v-model="task.done"
-      :label="task.text"
-      :class="{ 'line-through text-gray-500': task.done }"
-    />
-    <UButton
-      color="red"
-      variant="ghost"
-      size="xs"
-      @click="$emit('remove')"
+  <li class="flex items-center gap-4 py-2">
+    <span
+      class="flex-1 font-medium"
+      :class="[task.done ? 'line-through text-gray-500' : '']"
     >
-      ❌
-    </UButton>
+      {{ task.text }}
+    </span>
+
+    <USwitch
+      :model-value="task.done"
+      @update:model-value="toggleTask"
+    />
+
+    <UButton
+      color="error"
+      variant="soft"
+      size="xs"
+      icon="i-lucide-x"
+      @click="$emit('remove')"
+    />
   </li>
 </template>
 
-<script lang="ts" setup>
-import type { PropType } from 'vue';
+<script setup lang="ts">
+import type { PropType } from 'vue'
 
 interface Task {
-  text: string;
-  done: boolean;
+  text: string
+  done: boolean
 }
 
-defineProps({
+const props = defineProps({
   task: {
     type: Object as PropType<Task>,
     required: true
   }
-});
+})
 
-defineEmits(['remove']);
+const emit = defineEmits(['remove', 'update:task'])
+
+function toggleTask(value: boolean) {
+  console.log(value)
+  emit('update:task', { ...props.task, done: value })
+}
 </script>
-
-<style scoped>
-
-</style>
