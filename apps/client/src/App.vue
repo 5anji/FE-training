@@ -50,33 +50,57 @@ const newTask = ref('');
 
 const base = 'http://localhost:3000/items';
 
+const fetchOptions = {
+  timeout: 5000,
+};
+
 async function loadTasks() {
-  const { data } = await useFetch<Task[]>(base).get().json();
+  const { data, error } = await useFetch<Task[]>(base, fetchOptions).get().json();
+  if (error.value) {
+    console.error('Failed to load tasks:', error.value);
+    return;
+  }
   if (data.value) tasks.value = data.value;
 }
 
 async function addTask() {
   if (newTask.value.trim() !== '') {
-    const { data } = await useFetch<Task>(base).post({ title: newTask.value }).json();
+    const { data, error } = await useFetch<Task>(base, fetchOptions)
+      .post({ title: newTask.value })
+      .json();
+
+    if (error.value) {
+      console.error('Failed to add task:', error.value);
+      return;
+    }
     if (data.value) tasks.value.unshift(data.value);
     newTask.value = '';
   }
 }
 
 async function updateTask(index: number, updatedTask: Task) {
-  const { data } = await useFetch<Task>(`${base}/${updatedTask.id}`)
+  const { data, error } = await useFetch<Task>(`${base}/${updatedTask.id}`, fetchOptions)
     .patch({
       title: updatedTask.title,
       completed: updatedTask.completed,
     })
     .json();
 
-  // console.log(data.value);
+  if (error.value) {
+    console.error('Failed to update task:', error.value);
+    return;
+  }
   if (data.value) tasks.value[index] = data.value;
 }
+
 async function removeTask(index: number) {
   const id = tasks.value[index].id;
-  await useFetch(`${base}/${id}`).delete();
+  const { error } = await useFetch(`${base}/${id}`, fetchOptions).delete();
+
+  if (error.value) {
+    console.error('Failed to delete task:', error.value);
+    return;
+  }
   tasks.value.splice(index, 1);
 }
 
