@@ -35,37 +35,50 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ToDoItem from './components/ToDoItem.vue';
+import { useFetch } from '@vueuse/core';
 
 interface Task {
-  text: string;
-  done: boolean;
+  id: number;
+  title: string;
+  completed: boolean;
 }
 
 const tasks = ref<Task[]>([]);
 const newTask = ref('');
 
-function addTask() {
+const base = 'http://localhost:3000/items';
+
+async function loadTasks() {
+  const { data } = await useFetch<Task[]>(base).get().json();
+  if (data.value) tasks.value = data.value;
+}
+
+async function addTask() {
   if (newTask.value.trim() !== '') {
-    tasks.value.push({ text: newTask.value, done: false });
+    const { data } = await useFetch<Task>(base).post({ title: newTask.value }).json();
+    if (data.value) tasks.value.unshift(data.value);
     newTask.value = '';
   }
 }
 
-function updateTask(index: number, updatedTask: Task) {
-  tasks.value[index] = updatedTask
-}
+async function updateTask(index: number, updatedTask: Task) {
+  const { data } = await useFetch<Task>(`${base}/${updatedTask.id}`)
+    .patch({
+      title: updatedTask.title,
+      completed: updatedTask.completed,
+    })
+    .json();
 
-function removeTask(index: number) {
+  // console.log(data.value);
+  if (data.value) tasks.value[index] = data.value;
+}
+async function removeTask(index: number) {
+  const id = tasks.value[index].id;
+  await useFetch(`${base}/${id}`).delete();
   tasks.value.splice(index, 1);
 }
-</script>
 
-<style scoped>
-.app {
-  max-width: 400px;
-  margin: auto;
-  font-family: sans-serif;
-}
-</style>
+onMounted(loadTasks);
+</script>

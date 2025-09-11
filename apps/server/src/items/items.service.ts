@@ -1,0 +1,24 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
+import { Item } from '@prisma/client';
+
+@Injectable()
+export class ItemsService {
+  constructor(private prisma: PrismaService) {}
+
+  async create(title: string): Promise<Item> {
+    return this.prisma.item.create({ data: { title } });
+  }
+
+  async findAll(): Promise<Item[]> {
+    return this.prisma.item.findMany({ orderBy: { id: 'desc' } });
+  }
+
+  async update(id: number, data: Partial<Item>): Promise<Item> {
+    return this.prisma.item.update({ where: { id }, data });
+  }
+
+  async remove(id: number): Promise<Item> {
+    return this.prisma.item.delete({ where: { id } });
+  }
+}
