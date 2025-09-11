@@ -1,3 +1,7 @@
+import { IsString, IsNotEmpty } from 'class-validator';
+
 export class CreateItemDto {
-  title!: string;
+  @IsString()
+  @IsNotEmpty()
+  title: string;
 }
