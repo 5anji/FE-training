@@ -1,3 +1,49 @@
+<script setup lang="ts">
+import { useEventSource } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
+
+const { data, error } = useEventSource('http://localhost:3000/items/stats')
+
+const stats = computed(() => data.value ? JSON.parse(data.value) : null)
+
+const completionRate = computed(() => {
+  if (!stats.value || stats.value.total === 0)
+    return 0
+  return (stats.value.completed / stats.value.total) * 100
+})
+
+const progressValue = ref(0)
+
+watch(completionRate, (newRate) => {
+  const start = progressValue.value
+  const diff = newRate - start
+  const stepCount = 10
+  let step = 0
+
+  const animate = () => {
+    step++
+    progressValue.value = start + (diff * step) / stepCount
+    if (step < stepCount)
+      requestAnimationFrame(animate)
+  }
+
+  animate()
+})
+
+const progressColor = computed(() => {
+  if (completionRate.value === 100)
+    return 'success'
+  if (completionRate.value >= 50)
+    return 'primary'
+  if (completionRate.value > 0)
+    return 'warning'
+  return 'error'
+})
+
+if (error)
+  console.error('SSE connection error:', error)
+</script>
+
 <template>
   <UCard class="rounded-2xl shadow max-w-xl mx-auto">
     <template #header>
@@ -27,43 +73,3 @@
     </div>
   </UCard>
 </template>
-
-<script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useEventSource } from '@vueuse/core'
-
-const { data, error } = useEventSource('http://localhost:3000/items/stats')
-
-const stats = computed(() => data.value ? JSON.parse(data.value) : null)
-
-const completionRate = computed(() => {
-  if (!stats.value || stats.value.total === 0) return 0
-  return (stats.value.completed / stats.value.total) * 100
-})
-
-const progressValue = ref(0)
-
-watch(completionRate, (newRate) => {
-  const start = progressValue.value
-  const diff = newRate - start
-  const stepCount = 10
-  let step = 0
-
-  const animate = () => {
-    step++
-    progressValue.value = start + (diff * step) / stepCount
-    if (step < stepCount) requestAnimationFrame(animate)
-  }
-
-  animate()
-})
-
-const progressColor = computed(() => {
-  if (completionRate.value === 100) return 'success'
-  if (completionRate.value >= 50) return 'primary'
-  if (completionRate.value > 0) return 'warning'
-  return 'error'
-})
-
-if (error) console.error('SSE connection error:', error)
-</script>
