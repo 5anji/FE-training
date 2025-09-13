@@ -27,27 +27,19 @@
 import { ref, watch } from 'vue'
 
 interface Task {
-  text: string
   title: string
   completed: boolean
 }
 
-type Props = {
-  task: Task
-}
-
-const props = defineProps<Props>()
+const props = defineProps<{ task: Task }>()
 const emit = defineEmits(['remove', 'update:task'])
 
-// keep a local ref so v-model works on USwitch
 const localDone = ref(props.task.completed)
 
-// whenever localDone changes, emit update to parent
 watch(localDone, (val) => {
   emit('update:task', { ...props.task, completed: val })
 })
 
-// also sync localDone if parent updates task
 watch(
   () => props.task.completed,
   (val) => {

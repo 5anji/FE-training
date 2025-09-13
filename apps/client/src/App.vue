@@ -2,35 +2,46 @@
   <UApp>
     <RouterView />
     <div class="app">
-    <h1>To-Do List</h1>
     <!-- <UInput v-model="newTask" @keyup.enter="addTask" placeholder="Add a task" /> -->
-    <div class="flex items-center gap-2">
-      <UInput
-        v-model="newTask"
-        class="flex-1"
-        @keyup.enter="addTask"
-        placeholder="Add a task"
-        autocomplete="off"
-        autofocus
-      />
 
-      <UButton
-        @click="addTask"
-        icon="i-lucide-plus"
-      />
+    <div class="max-w-xl mx-auto p-6 space-y-6">
+      <div class="flex flex-col items-center">
+        <h1 class="text-3xl font-bold text-primary tracking-wide text-center">
+          To-Do List
+        </h1>
+        <div class="h-1 w-16 bg-primary rounded-full mt-2"></div>
+      </div>
+        <TaskStats />
+        <!-- Your existing to-do list here -->
+         <div class="flex items-center gap-2">
+          <UInput
+            v-model="newTask"
+            class="flex-1"
+            @keyup.enter="addTask"
+            placeholder="Add a task"
+            autocomplete="off"
+            autofocus
+          />
+
+          <UButton
+            @click="addTask"
+            icon="i-lucide-plus"
+          />
+        </div>
+
+        <ul>
+          <ToDoItem
+            v-for="(task, index) in tasks"
+            :key="index"
+            :task="task"
+            class="divide-y divide-gray-200 dark:divide-gray-800"
+            @update:task="updateTask(index, $event)"
+            @remove="removeTask(index)"
+          />
+        </ul>
+      </div>
     </div>
 
-    <ul>
-      <ToDoItem
-        v-for="(task, index) in tasks"
-        :key="index"
-        :task="task"
-        class="divide-y divide-gray-200 dark:divide-gray-800"
-        @update:task="updateTask(index, $event)"
-        @remove="removeTask(index)"
-      />
-    </ul>
-  </div>
   </UApp>
 </template>
 

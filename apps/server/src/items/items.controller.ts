@@ -34,7 +34,7 @@ export class ItemsController {
   // SSE endpoint: emits stats every 2 seconds
   @Sse('stats')
   stats() {
-    return interval(2000).pipe(
+    return interval(250).pipe(
       // convert interval ticks into a promise -> observable that resolves to items list
       switchMap(() => from(this.itemsService.findAll())),
       map(all => ({
