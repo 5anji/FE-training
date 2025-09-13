@@ -41,6 +41,7 @@ async function addTask() {
     if (data.value)
       tasks.value.unshift(data.value)
     newTask.value = ''
+    console.log("sheva")
   }
 }
 

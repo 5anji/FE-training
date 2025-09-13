@@ -1,12 +1,15 @@
 {
   "name": "my-monorepo",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "pnpm --filter client dev",
     "build": "pnpm --filter client build",
-    "preview": "pnpm --filter client preview"
+    "preview": "pnpm --filter client preview",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Sse } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  Sse,
+} from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -37,10 +46,10 @@ export class ItemsController {
     return interval(250).pipe(
       // convert interval ticks into a promise -> observable that resolves to items list
       switchMap(() => from(this.itemsService.findAll())),
-      map(all => ({
+      map((all) => ({
         data: {
           total: all.length,
-          completed: all.filter(t => t.completed).length,
+          completed: all.filter((t) => t.completed).length,
         },
       })),
     );
