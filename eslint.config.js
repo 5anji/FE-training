@@ -9,6 +9,11 @@ export default antfu(
     files: ['apps/server/**/*.{ts,js}'],
     rules: {
       'no-console': 'off', // allow console in server
+      '@typescript-eslint/consistent-type-imports': ['error', {
+        prefer: 'type-imports',
+        disallowTypeAnnotations: false,
+        fixStyle: 'separate-type-imports',
+      }],
     },
   },
   {
@@ -16,5 +21,5 @@ export default antfu(
     rules: {
       'no-console': 'warn', // warn in client
     },
-  },
+  }
 )
