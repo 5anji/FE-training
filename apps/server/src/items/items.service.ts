@@ -1,10 +1,10 @@
 import type { Item } from '@prisma/client'
-import type { PrismaService } from '../prisma.service'
+import { PrismaService } from '../prisma.service' // eslint-disable-line
 import { Injectable, NotFoundException } from '@nestjs/common'
 
 @Injectable()
 export class ItemsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(title: string): Promise<Item> {
     return this.prisma.item.create({ data: { title } })

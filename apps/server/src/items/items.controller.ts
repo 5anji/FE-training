@@ -1,6 +1,6 @@
 import type { CreateItemDto } from './dto/create-item.dto'
 import type { UpdateItemDto } from './dto/update-item.dto'
-import type { ItemsService } from './items.service'
+import { ItemsService } from './items.service' // eslint-disable-line
 import {
   Body,
   Controller,
