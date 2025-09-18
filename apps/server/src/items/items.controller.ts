@@ -1,18 +1,17 @@
+import type { CreateItemDto } from './dto/create-item.dto'
+import type { UpdateItemDto } from './dto/update-item.dto'
+import type { ItemsService } from './items.service'
 import {
-  Controller,
-  Get,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
-  Delete,
+  Post,
   Sse,
-} from '@nestjs/common';
-import { ItemsService } from './items.service';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
-import { interval, map, switchMap } from 'rxjs';
-import { from } from 'rxjs';
+} from '@nestjs/common'
+import { from, interval, map, switchMap } from 'rxjs'
 
 @Controller('items')
 export class ItemsController {
@@ -20,24 +19,24 @@ export class ItemsController {
 
   @Get()
   findAll() {
-    return this.itemsService.findAll();
+    return this.itemsService.findAll()
   }
 
   @Post()
   create(@Body() dto: CreateItemDto) {
     // console.log(dto)
-    return this.itemsService.create(dto.title);
+    return this.itemsService.create(dto.title)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateItemDto) {
     // console.log(dto)
-    return this.itemsService.update(Number(id), dto);
+    return this.itemsService.update(Number(id), dto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.itemsService.remove(Number(id));
+    return this.itemsService.remove(Number(id))
   }
 
   // SSE endpoint: emits stats every 2 seconds
@@ -46,12 +45,12 @@ export class ItemsController {
     return interval(250).pipe(
       // convert interval ticks into a promise -> observable that resolves to items list
       switchMap(() => from(this.itemsService.findAll())),
-      map((all) => ({
+      map(all => ({
         data: {
           total: all.length,
-          completed: all.filter((t) => t.completed).length,
+          completed: all.filter(t => t.completed).length,
         },
       })),
-    );
+    )
   }
 }
