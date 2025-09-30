@@ -1,6 +1,6 @@
 import type { Item } from '@prisma/client'
-import { PrismaService } from '../prisma.service' // eslint-disable-line
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class ItemsService {

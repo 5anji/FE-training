@@ -1,6 +1,3 @@
-import type { CreateItemDto } from './dto/create-item.dto'
-import type { UpdateItemDto } from './dto/update-item.dto'
-import { ItemsService } from './items.service' // eslint-disable-line
 import {
   Body,
   Controller,
@@ -12,6 +9,9 @@ import {
   Sse,
 } from '@nestjs/common'
 import { from, interval, map, switchMap } from 'rxjs'
+import { CreateItemDto } from './dto/create-item.dto'
+import { UpdateItemDto } from './dto/update-item.dto'
+import { ItemsService } from './items.service'
 
 @Controller('items')
 export class ItemsController {
@@ -24,13 +24,11 @@ export class ItemsController {
 
   @Post()
   create(@Body() dto: CreateItemDto) {
-    // console.log(dto)
     return this.itemsService.create(dto.title)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateItemDto) {
-    // console.log(dto)
     return this.itemsService.update(Number(id), dto)
   }
 

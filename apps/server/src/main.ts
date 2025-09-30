@@ -56,9 +56,8 @@ async function bootstrap() {
     credentials: true,
   })
   app.useGlobalInterceptors(new LoggingInterceptor())
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false, transform: true }))
   await app.listen(3000)
   console.log('Server listening on http://localhost:3000')
-
 }
 bootstrap()
