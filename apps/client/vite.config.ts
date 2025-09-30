@@ -7,4 +7,13 @@ export default defineConfig({
     vue(),
     ui(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        changeOrigin: true,
+        secure: false,
+        target: 'http://localhost:3000'
+      }
+    }
+  }
 })

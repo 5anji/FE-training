@@ -12,7 +12,7 @@ interface Task {
 const tasks = ref<Task[]>([])
 const newTask = ref('')
 
-const base = 'http://localhost:3000/items'
+const base = '/api/items'
 
 const fetchOptions = {
   timeout: 5000,
@@ -41,7 +41,6 @@ async function addTask() {
     if (data.value)
       tasks.value.unshift(data.value)
     newTask.value = ''
-    // console.log('sheva')
   }
 }
 

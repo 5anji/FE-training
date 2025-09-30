@@ -2,7 +2,7 @@
 import { useEventSource } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 
-const { data, error } = useEventSource('http://localhost:3000/items/stats')
+const { data, error } = useEventSource('/api/items/stats')
 
 const stats = computed(() => data.value ? JSON.parse(data.value) : null)
 
