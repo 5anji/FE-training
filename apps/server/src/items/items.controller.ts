@@ -8,7 +8,7 @@ import {
   Post,
   Sse,
 } from '@nestjs/common'
-import { from, interval, map, switchMap } from 'rxjs'
+import { from, map, startWith, switchMap } from 'rxjs'
 import { CreateItemDto } from './dto/create-item.dto'
 import { UpdateItemDto } from './dto/update-item.dto'
 import { ItemsService } from './items.service'
@@ -37,11 +37,10 @@ export class ItemsController {
     return this.itemsService.remove(Number(id))
   }
 
-  // SSE endpoint: emits stats every 2 seconds
   @Sse('stats')
   stats() {
-    return interval(250).pipe(
-      // convert interval ticks into a promise -> observable that resolves to items list
+    return this.itemsService.changes.pipe(
+      startWith(null),
       switchMap(() => from(this.itemsService.findAll())),
       map(all => ({
         data: {
